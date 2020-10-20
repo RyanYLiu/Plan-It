@@ -1,25 +1,48 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class Map : MonoBehaviour
+namespace Map
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Map
     {
-        
-    }
+        public List<Node> nodes;
+        public List<Point> path;
+        public string bossNodeName;
+        public string configName; // similar to the act name in Slay the Spire
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
+        public Map(string configName, string bossNodeName, List<Node> nodes, List<Point> path)
         {
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                Debug.Log("clicked on ui");
-            }
+            this.configName = configName;
+            this.bossNodeName = bossNodeName;
+            this.nodes = nodes;
+            this.path = path;
+        }
+
+        public Node GetBossNode()
+        {
+            return nodes.FirstOrDefault(n => n.nodeType == NodeType.Boss);
+        }
+
+        public float DistanceBetweenFirstAndLastLayers()
+        {
+            var bossNode = GetBossNode();
+            var firstLayerNode = nodes.FirstOrDefault(n => n.point.y == 0);
+
+            if (bossNode == null || firstLayerNode == null)
+                return 0f;
+
+            return bossNode.position.y - firstLayerNode.position.y;
+        }
+
+        public Node GetNode(Point point)
+        {
+            return nodes.FirstOrDefault(n => n.point.Equals(point));
+        }
+
+        public string ToJson()
+        {
+            return JsonUtility.ToJson(this, true);
         }
     }
 }
