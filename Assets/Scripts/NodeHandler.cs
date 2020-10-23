@@ -6,7 +6,7 @@ public class NodeHandler : MonoBehaviour
 {
     [SerializeField] GameObject scouter;
     [SerializeField] GameObject player;
-    [SerializeField] MapManager mapManager;
+    [SerializeField] Map.MapManager mapManager;
     [SerializeField] GameObject scoutDialogWindow;
     [SerializeField] GameObject playerDialogWindow;
 
